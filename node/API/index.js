@@ -1,11 +1,33 @@
-import express from "express";
+import express, { request } from "express";
 
 const app = express();
 
+app.use(express.json());
+
+let usuarios = [
+    {
+        id: 134685,
+        nome: "Eduardo",
+        idade: 40,
+        email: "eduardodudu006@gamil.com",
+    },
+    {
+        id: 468571,
+        nome: "Ana",
+        idade: 47,
+        email: "analuciabranq@gamil.com",
+    },
+];
+
 app.get("/usuarios", (req, res) => {
-    res.send("Olá Mundo!!!");
+    res.json(usuarios);
 });
 
-app.listen(3003, () => {
+app.post("/usuarios", (req, res) => {
+
+    console.log(req)
+})
+
+app.listen(3003, "0.0.0.0", () => {
     console.log("Servidor Rodando!!!");
 });
