@@ -1,33 +1,91 @@
 import express, { request } from "express";
+import mongoose from "mongoose";
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); // Avisando que vou usar JSON
 
+mongoose.connect(
+        "mongodb+srv://eduardodudu006_db_user:Be12618%40%40@cluster0.0yqksmc.mongodb.net/Usuarios?appName=Cluster0",
+    )
+    .then(() => console.log("Conectado ao Banco de Dados Mongo."))
+    .catch((err) => console.log(err));
+
+// Schema (Esquema de Dados) -> Formato
+const usuariosSchema = new mongoose.Schema({
+    nome: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    idade: { type: Number, required: true },
+}, { timestamps: true})
+
+const Usuario = mongoose.model("Usuario", usuariosSchema);
+
+/*
+request -> Front End pede...
+response -> Back End responde.
+ThunderClient -> Simula um Front End.
+JSON (JavaScript Object Notation) - Notação de Objeto JavaScript
+JSON -> Formato de Dados
+Exemplo: "chave": "Valor"
 let usuarios = [
     {
-        id: 134685,
-        nome: "Eduardo",
-        idade: 40,
-        email: "eduardodudu006@gamil.com",
-    },
-    {
-        id: 468571,
-        nome: "Ana",
-        idade: 47,
-        email: "analuciabranq@gamil.com",
-    },
-];
+        "id": 134685,
+        "nome": "Eduardo",
+        "idade": 40,
+        "email": "eduardodudu006@gamil.com",
+    }
+Para que os Dados não se percam, é preciso um DB (Banco de Dados)
+Lugar onde guardamos de forma Segura as informações da Aplicação
 
-app.get("/usuarios", (req, res) => {
-    res.json(usuarios);
+Caminho que as Aplicações fazem:
+    Exemplo: Instagram
+        Para Logar -> Front End
+        Daí o Front End envia as Informações para o Back End
+        Que por sua Vez Guarda ou Busca tudo que for Necessário no Banco de Dados
+
+*/
+
+// Retorna / Lista os Usuários
+app.get("/usuarios", async (req, res) => {
+
+    const usuariosDoBanco = await Usuario.find()
+
+    //Respondendo ao Front End com os Usuários
+    res.json(usuariosDoBanco);
 });
+
+/*
+Criar Usuários
+Todas as Vezes que Precisamos Acessar algo fora da Alpicação,
+Chamamos de Requisição Assíncrona.
+E utilizamos o Promisse (Promessa) ->
+Quanto Ttempo o Banco de Dados Demora Para Responder?
+    1segundo?
+    2segundos?
+E todas as vezes que precisamos utilizar a Promisse...
+Precisamos Utilizar a Ferramenta async / await
+
+Exemplo - Antes:
 
 app.post("/usuarios", (req, res) => {
 
-    console.log(req)
+    const usuarioCriado = Usuario.create(req.body)
+
+Exemplo - Depois:
+
+app.post("/usuarios", async (req, res) => {
+
+    const usuarioCriado = await Usuario.create(req.body)
+*/
+
+app.post("/usuarios", async (req, res) => {
+
+    const usuarioCriado = await Usuario.create(req.body)
+
+
+    res.json(usuarioCriado);
 })
 
 app.listen(3003, "0.0.0.0", () => {
-    console.log("Servidor Rodando!!!");
+    console.log("Servidor Rodando na Porta 3003!!!");
 });
