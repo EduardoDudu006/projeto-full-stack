@@ -1,6 +1,7 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserCard from "./components/UserCard";
+import axios from "axios";
 
 function App() {
     const [name, setName] = useState("Eduardo");
@@ -8,25 +9,21 @@ function App() {
     const [age, setAge] = useState(40);
     const [users, setUsers] = useState([]);
 
-    let valorInput = "Eduardo";
+    useEffect(() => {
+        async function buscarUsuarios() {
+            const resposta = await axios.get("http://localhost:3003/usuarios");
+
+            setUsers(resposta.data);
+        }
+
+        buscarUsuarios();
+    }, []);
 
     function handleSubmit(event) {
         event.preventDefault();
 
-        const newUser = {
-            id: Date.now(),
-            name: name,
-            email: email,
-            age: age,
-        };
-
-        console.log(newUser)
-
-        setUsers([...users, newUser])
-        // .../ spread operator (manter todo mundo que já tinha (users) e o (newUser) vai adicionar o novo usuário)
+        
     }
-
-    console.log(valorInput);
 
     return (
         <div className="app">
@@ -58,7 +55,7 @@ function App() {
 
             <div className="user-list">
                 {users.map((user) => (
-                    <UserCard key={user.id} user={user} />
+                    <UserCard key={user._id} user={user} />
                 ))}
             </div>
         </div>
@@ -66,9 +63,4 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
 

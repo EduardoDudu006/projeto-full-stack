@@ -1,9 +1,11 @@
-import express, { request } from "express";
-import mongoose from "mongoose";
+import express from "express";
+import mongoose from "mongoose"
+import cors from "cors"
 
-const app = express();
+const app = express()
 
-app.use(express.json()); // Avisando que vou usar JSON
+app.use(express.json()) // Avisando que vou usar JSON
+app.use(cors())
 
 mongoose.connect(
         "mongodb+srv://eduardodudu006_db_user:Be12618%40%40@cluster0.0yqksmc.mongodb.net/Usuarios?appName=Cluster0",
