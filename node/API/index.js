@@ -1,15 +1,15 @@
 import express from "express";
 import mongoose from "mongoose"
 import cors from "cors"
+import "dotenv/config"
 
 const app = express()
 
 app.use(express.json()) // Avisando que vou usar JSON
 app.use(cors())
 
-mongoose.connect(
-        "mongodb+srv://eduardodudu006_db_user:Be12618%40%40@cluster0.0yqksmc.mongodb.net/Usuarios?appName=Cluster0",
-    )
+mongoose
+    .connect(process.env.MONGO_URI)
     .then(() => console.log("Conectado ao Banco de Dados Mongo."))
     .catch((err) => console.log(err));
 
@@ -88,6 +88,8 @@ app.post("/usuarios", async (req, res) => {
     res.json(usuarioCriado);
 })
 
-app.listen(3003, "0.0.0.0", () => {
-    console.log("Servidor Rodando na Porta 3003!!!");
+const PORTA = process.env.PORT || 3003;
+
+app.listen(PORTA, "0.0.0.0", () => {
+    console.log(`Servidor Rodando na Porta ${PORTA}!!!`);
 });
