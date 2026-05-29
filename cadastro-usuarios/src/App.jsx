@@ -11,7 +11,9 @@ function App() {
 
     useEffect(() => {
         async function buscarUsuarios() {
-            const resposta = await axios.get("http://localhost:3003/usuarios");
+            const resposta = await axios.get("http://localhost:3003/usuarios", {
+
+            });
 
             setUsers(resposta.data);
         }
@@ -19,10 +21,15 @@ function App() {
         buscarUsuarios();
     }, []);
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
 
-        
+        await axios.post("http://localhost:3003/usuarios", {
+            nome: name,
+            email,
+            idade: age
+            });
+
     }
 
     return (
