@@ -10,7 +10,8 @@ function App() {
     const [users, setUsers] = useState([]);
 
     // URL do seu Back-end (Use localhost:3003 para testar no seu PC ou o link do Render se já subiu)
-    const API_URL = "http://localhost:3003/usuarios";
+    // Substitua o localhost pelo seu link do Render (Mantenha o /usuarios no final!)
+    const API_URL = "https://backend-usuarios.onrender.com/usuarios";
 
     // Buscar usuários ao carregar a página
     useEffect(() => {
@@ -86,3 +87,4 @@ function App() {
 }
 
 export default App;
+
