@@ -11,7 +11,7 @@ app.use(cors())
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => console.log("Conectado ao Banco de Dados Mongo."))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("Erro de conexão com o banco:", err));
 
 // Schema (Esquema de Dados) -> Formato
 const usuariosSchema = new mongoose.Schema({
@@ -47,13 +47,14 @@ Caminho que as Aplicações fazem:
 
 */
 
-// Retorna / Lista os Usuários
+// Rota GET - Listar usuários
 app.get("/usuarios", async (req, res) => {
-
-    const usuariosDoBanco = await Usuario.find()
-
-    //Respondendo ao Front End com os Usuários
-    res.json(usuariosDoBanco);
+    try {
+        const usuariosDoBanco = await Usuario.find();
+        res.json(usuariosDoBanco);
+    } catch (erro) {
+        res.status(500).json({ erro: "Erro interno ao buscar usuários." });
+    }
 });
 
 /*
@@ -80,13 +81,15 @@ app.post("/usuarios", async (req, res) => {
     const usuarioCriado = await Usuario.create(req.body)
 */
 
+// Rota POST - Criar usuário
 app.post("/usuarios", async (req, res) => {
-
-    const usuarioCriado = await Usuario.create(req.body)
-
-
-    res.json(usuarioCriado);
-})
+    try {
+        const usuarioCriado = await Usuario.create(req.body);
+        res.status(201).json(usuarioCriado);
+    } catch (erro) {
+        res.status(400).json({ erro: "Erro ao criar usuário. Verifique se os dados são válidos ou se o e-mail já existe." });
+    }
+});
 
 const PORTA = process.env.PORT || 3003;
 

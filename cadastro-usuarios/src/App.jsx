@@ -4,33 +4,50 @@ import UserCard from "./components/UserCard";
 import axios from "axios";
 
 function App() {
-    const [name, setName] = useState("Eduardo");
-    const [email, setEmail] = useState("eduardodudu006@gmail.com");
-    const [age, setAge] = useState(40);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [age, setAge] = useState("");
     const [users, setUsers] = useState([]);
 
+    // URL do seu Back-end (Use localhost:3003 para testar no seu PC ou o link do Render se já subiu)
+    const API_URL = "http://localhost:3003/usuarios";
+
+    // Buscar usuários ao carregar a página
     useEffect(() => {
         async function buscarUsuarios() {
-            const resposta = await axios.get(
-                "http://projeto-full-stack.onrender.com/usuarios",
-                {},
-            );
-
-            setUsers(resposta.data);
+            try {
+                const resposta = await axios.get(API_URL);
+                setUsers(resposta.data);
+            } catch (erro) {
+                console.error("Erro ao buscar usuários:", erro);
+            }
         }
-
         buscarUsuarios();
     }, []);
 
+    // Cadastrar usuário
     async function handleSubmit(event) {
         event.preventDefault();
 
-        await axios.post("http://projeto-full-stack.onrender.com/usuarios", {
-            nome: name,
-            email,
-            idade: age,
-        });
+        try {
+            // Enviamos no formato esperado pelo banco (nome, email, idade)
+            const resposta = await axios.post(API_URL, {
+                nome: name,
+                email: email,
+                idade: Number(age),
+            });
 
+            // Sincroniza a tela adicionando o usuário retornado pela API na lista atual
+            setUsers([...users, resposta.data]);
+
+            // Limpa o formulário
+            setName("");
+            setEmail("");
+            setAge("");
+        } catch (erro) {
+            console.error("Erro ao cadastrar usuário:", erro);
+            alert("Erro ao cadastrar. Verifique se o e-mail já existe.");
+        }
     }
 
     return (
@@ -44,7 +61,6 @@ function App() {
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                 />
-
                 <input
                     placeholder="Email"
                     type="email"
@@ -57,7 +73,6 @@ function App() {
                     value={age}
                     onChange={(event) => setAge(event.target.value)}
                 />
-
                 <button type="submit">Cadastrar</button>
             </form>
 
@@ -71,6 +86,3 @@ function App() {
 }
 
 export default App;
-
-
-
