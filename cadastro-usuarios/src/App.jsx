@@ -53,6 +53,7 @@ function App() {
 
     return (
         <div className="app">
+            <h1 className="titulo">Projeto Full Stack</h1>
             <h1>Cadastro de Usuários</h1>
 
             <form onSubmit={handleSubmit}>
