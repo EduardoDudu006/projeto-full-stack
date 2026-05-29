@@ -4,7 +4,7 @@ function UserCard({user}) {
 
     return (
         <div className="user-card">
-            <img className='user-card-avatar' src={'https://robohash.org/${user._id}'} />
+            <img className='user-card-avatar' src={`https://robohash.org/${user._id}`} />
             <div className='user-card-info'>
                 <p>Nome: {user.name}</p>
                 <p>E-mail: {user.email}</p>
