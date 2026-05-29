@@ -11,9 +11,10 @@ function App() {
 
     useEffect(() => {
         async function buscarUsuarios() {
-            const resposta = await axios.get("http://localhost:3003/usuarios", {
-
-            });
+            const resposta = await axios.get(
+                "http://projeto-full-stack.onrender.com/usuarios",
+                {},
+            );
 
             setUsers(resposta.data);
         }
@@ -24,11 +25,11 @@ function App() {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        await axios.post("http://localhost:3003/usuarios", {
+        await axios.post("http://projeto-full-stack.onrender.com/usuarios", {
             nome: name,
             email,
-            idade: age
-            });
+            idade: age,
+        });
 
     }
 
@@ -70,4 +71,6 @@ function App() {
 }
 
 export default App;
+
+
 
